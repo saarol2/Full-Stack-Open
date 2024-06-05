@@ -41,11 +41,11 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(initialVotes)
   
-  const Random = () => {
+  const random = () => {
     const randomIndex = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomIndex);
   }
-  const Vote = () =>{
+  const vote = () =>{
     const newVotes = [...votes]
     newVotes[selected] += 1
     setVotes(newVotes)
@@ -55,8 +55,8 @@ const App = () => {
     <div>
       <h2>Anecdote of the day</h2>
       <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
-      <Button handleClick={Vote} text = "vote" />
-      <Button handleClick={Random} text = "next anecdote" />
+      <Button handleClick={vote} text = "vote" />
+      <Button handleClick={random} text = "next anecdote" />
       <BestAnecdote anecdotes={anecdotes} votes={votes} />
     </div>
   )
