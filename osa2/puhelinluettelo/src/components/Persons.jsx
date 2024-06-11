@@ -1,9 +1,13 @@
-const Persons = ({ personsToShow }) => (
-    <ul>
-      {personsToShow.map((person, index) => (
-        <li key={index}>{person.name} {person.number}</li>
-      ))}
-    </ul>
+const Persons = ({ personsToShow, deletePerson }) => {
+  return (
+    <div>
+      {personsToShow.map(person =>
+        <div key={person.id}>
+          {person.name} {person.number} 
+          <button onClick={() => deletePerson(person.id, person.name)}>delete</button>
+        </div>
+      )}
+    </div>
   )
-  
+}
   export default Persons
