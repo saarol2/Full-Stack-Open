@@ -38,7 +38,7 @@ let weatherInfo;
         <div>
             <h2>{country.name.common}</h2>
             <div>Capital: {country.capital}</div>
-            <div>Population: {country.population}</div>
+            <div>Area: {country.area}</div>
             <h3>Languages:</h3>
             <ul>
                 {Object.values(country.languages).map((language => (
