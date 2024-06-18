@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './service/personService'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [newMessage, setNewMessage] = useState({message: null, type: ''})
 
   useEffect(() => {
     personService
@@ -49,6 +51,10 @@ const App = () => {
           .update(existingPerson.id, updatedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson))
+            setNewMessage({message: `Changed ${newName}'s number to ${newNumber}`, type: 'success'})
+            setTimeout(() => {
+              setNewMessage({ message: null, type: '' })
+            }, 5000)
             setNewName('')
             setNewNumber('')
           })
@@ -60,6 +66,10 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setNewMessage({message: `Added ${newName}`, type: 'success'})
+        setTimeout(() => {
+          setNewMessage({message: null, type: ''})
+        }, 5000)
         setNewName('')
         setNewNumber('')
       })
@@ -71,7 +81,18 @@ const App = () => {
         .removePerson(id)
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
+          setNewMessage({message: `Deleted ${name}`, type: 'success'})
+          setTimeout(() => {
+            setNewMessage({message: null, type: ''})
+          }, 5000)
         })
+        .catch(error => {
+          setNewMessage({message: `Information of ${name} has already been removed from the server`, type: 'error'})
+          setTimeout(() => {
+            setNewMessage({message: null, type: ''})
+          }, 5000)
+        })
+        setPersons(persons.filter(n => n.id !== id))
     }
   }
 
@@ -82,6 +103,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={newMessage.message} type={newMessage.type} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm 
